@@ -3,7 +3,8 @@ class ProjectsController < ApplicationController
   before_filter :authenticate
 
   def index
-    @projects = Project.all
+    @projects = policy_scope(Project.all)  # Project.all is a scope
+    authorize @projects
 
     if params[:status].present?
       @projects = @projects.select { |project| project.status == params[:status] }
